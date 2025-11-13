@@ -33,7 +33,9 @@ export function AuthContextProvider({ children }: AuthContextProps) {
 				setLoadingAuth(false);
 			});
 		};
-		sub();
+		return () => {
+			sub();
+		};
 	}, []);
 	async function handleSignIn(data: SignInData) {
 		try {
