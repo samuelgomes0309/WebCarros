@@ -21,15 +21,17 @@ export default function SignIn({ isLogin, setLogin }: LoginProps) {
 	});
 	const nav = useNavigate();
 	useEffect(() => {
-		logOut();
 		reset();
-	}, [isLogin, logOut, reset]);
+	}, [isLogin, reset]);
+	useEffect(() => {
+		logOut();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 	async function onsubmit(data: SignInData) {
 		const response = await handleSignIn(data);
 		if (response) {
 			toast.success("Login realizado!");
-			nav("/dashboard");
-			return;
+			return nav("/dashboard");
 		}
 	}
 	return (
@@ -43,7 +45,7 @@ export default function SignIn({ isLogin, setLogin }: LoginProps) {
 					className="flex flex-col bg-white w-full px-4 rounded-xl py-5 "
 				>
 					<input
-						className={`px-4 py-1.5 border  border-gray-400 rounded-xl placeholder-gray-800  ${!errors.email?.message && focus === "email" ? "outline outline-blue-400" : "outline-0"}   ${errors?.email?.message && "outline outline-red-500"}`}
+						className={`px-4 py-1.5 border  border-gray-400 rounded-xl placeholder-gray-800  ${!errors.email?.message && focus === "email" ? "outline outline-blue-400" : "outline-0"}   ${errors?.email?.message && "outline-1 outline-red-500"}`}
 						type="email"
 						placeholder="Digite seu email..."
 						{...register("email")}
@@ -56,7 +58,7 @@ export default function SignIn({ isLogin, setLogin }: LoginProps) {
 						</span>
 					)}
 					<input
-						className={`px-4 py-1.5 border my-2 border-gray-400 rounded-xl placeholder-gray-800  ${!errors.password?.message && focus === "password" ? "outline outline-blue-400" : "outline-0"}   ${errors?.password?.message && "outline outline-red-500"}`}
+						className={`px-4 py-1.5 border my-2 border-gray-400 rounded-xl placeholder-gray-800    ${errors?.password?.message && "outline-1 outline-red-500"} ${!errors.password?.message && focus === "password" ? "outline outline-blue-400" : "outline-0"}`}
 						type="password"
 						placeholder="Digite sua senha"
 						{...register("password")}
@@ -75,9 +77,9 @@ export default function SignIn({ isLogin, setLogin }: LoginProps) {
 						className={`w-full cursor-pointer transition duration-300 hover:bg-zinc-800/95 bg-zinc-900 rounded-xl py-1.5 text-white font-bold disabled:bg-gray-200 disabled:cursor-not-allowed disabled:text-black`}
 					>
 						{isSubmitting ? (
-							<span className="animate-pulse"> Cadastrando...</span>
+							<span className="animate-pulse"> Entrando...</span>
 						) : (
-							"Cadastrar"
+							"Entrar"
 						)}
 					</button>
 				</form>

@@ -19,22 +19,20 @@ export function AuthContextProvider({ children }: AuthContextProps) {
 	const [user, setUser] = useState<UserProps | null>(null);
 	const [loadingAuth, setLoadingAuth] = useState<boolean>(true);
 	useEffect(() => {
-		const sub = () => {
-			onAuthStateChanged(auth, (currentUser) => {
-				if (currentUser) {
-					setUser({
-						email: currentUser.email ?? "",
-						uid: currentUser.uid,
-						name: currentUser.displayName ?? "",
-					});
-				} else {
-					setUser(null);
-				}
-				setLoadingAuth(false);
-			});
-		};
+		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+			if (currentUser) {
+				setUser({
+					email: currentUser.email ?? "",
+					uid: currentUser.uid,
+					name: currentUser.displayName ?? "",
+				});
+			} else {
+				setUser(null);
+			}
+			setLoadingAuth(false);
+		});
 		return () => {
-			sub();
+			unsubscribe();
 		};
 	}, []);
 	async function handleSignIn(data: SignInData) {
@@ -43,7 +41,7 @@ export function AuthContextProvider({ children }: AuthContextProps) {
 			const response = await signInWithEmailAndPassword(auth, email, password);
 			setUser({
 				uid: response.user.uid,
-				email,
+				email: response.user.email ?? email,
 				name: response.user.displayName ?? "",
 			});
 			return true;

@@ -21,9 +21,12 @@ export default function SignUp({ isLogin, setLogin }: LoginProps) {
 	});
 	const nav = useNavigate();
 	useEffect(() => {
-		logOut();
 		reset();
-	}, [isLogin, logOut, reset]);
+	}, [isLogin, reset]);
+	useEffect(() => {
+		logOut();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 	async function onsubmit(data: SignUpData) {
 		const response = await handleSignUp(data);
 		if (response) {
@@ -46,7 +49,7 @@ export default function SignUp({ isLogin, setLogin }: LoginProps) {
 					className="flex flex-col bg-white w-full px-4 rounded-xl py-5 "
 				>
 					<input
-						className={`px-4 py-1.5 border  border-gray-400 rounded-xl placeholder-gray-800  ${!errors.name?.message && focus === "name" ? "outline outline-blue-400" : "outline-0"}   ${errors?.name?.message && "outline outline-red-500"}`}
+						className={`px-4 py-1.5 border  border-gray-400 rounded-xl placeholder-gray-800  ${!errors.name?.message && focus === "name" ? "outline outline-blue-400" : "outline-0"}   ${errors?.name?.message && "outline-1 outline-red-500"}`}
 						type="text"
 						placeholder="Digite seu nome completo..."
 						{...register("name")}
@@ -59,7 +62,7 @@ export default function SignUp({ isLogin, setLogin }: LoginProps) {
 						</span>
 					)}
 					<input
-						className={`px-4 py-1.5 border mt-2 border-gray-400 rounded-xl placeholder-gray-800  ${!errors.email?.message && focus === "email" ? "outline outline-blue-400" : "outline-0"}   ${errors?.email?.message && "outline outline-red-500"}`}
+						className={`px-4 py-1.5 border mt-2 border-gray-400 rounded-xl placeholder-gray-800  ${!errors.email?.message && focus === "email" ? "outline outline-blue-400" : "outline-0"}   ${errors?.email?.message && "outline-1 outline-red-500"}`}
 						type="email"
 						placeholder="Digite seu email..."
 						{...register("email")}
@@ -72,7 +75,7 @@ export default function SignUp({ isLogin, setLogin }: LoginProps) {
 						</span>
 					)}
 					<input
-						className={`px-4 py-1.5 border my-2 border-gray-400 rounded-xl placeholder-gray-800  ${!errors.password?.message && focus === "password" ? "outline outline-blue-400" : "outline-0"}   ${errors?.password?.message && "outline outline-red-500"}`}
+						className={`px-4 py-1.5 border my-2 border-gray-400 rounded-xl placeholder-gray-800  ${!errors.password?.message && focus === "password" ? "outline outline-blue-400" : "outline-0"}   ${errors?.password?.message && "outline-1 outline-red-500"}`}
 						type="password"
 						placeholder="Digite sua senha"
 						{...register("password")}
