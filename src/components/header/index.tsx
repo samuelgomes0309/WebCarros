@@ -6,8 +6,6 @@ import { LogInIcon, UserCircle } from "lucide-react";
 
 export default function Header() {
 	const { signed, loadingAuth } = useContext(AuthContext)!;
-	console.log(signed);
-	console.log(loadingAuth);
 	return (
 		<header className="bg-white flex py-2.5 shadow justify-center px-5 mb-4">
 			<div className="flex w-full justify-between items-center px-4 max-w-7xl">
