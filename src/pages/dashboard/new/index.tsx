@@ -31,6 +31,7 @@ interface CarProps {
 	description: string;
 	whatsApp: string;
 	owner_id: string;
+	created: Date;
 	images: {
 		uid: string;
 		name: string;
@@ -118,6 +119,7 @@ export default function NewDash() {
 			const docData: CarProps = {
 				owner_id: user?.uid,
 				images: uploadedImages,
+				created: new Date(),
 				...data,
 			};
 			const ref = collection(db, "collectionCars");

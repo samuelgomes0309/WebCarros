@@ -34,12 +34,13 @@ export interface ItemCarProps {
 	}[];
 }
 
-type FirestoreCar = Omit<ItemCarProps, "id">;
+export type FirestoreCar = Omit<ItemCarProps, "id">;
 
 export default function Dashboard() {
 	const { user } = useContext(AuthContext)!;
 	const [loading, setLoading] = useState<boolean>(true);
 	const [carList, setCarList] = useState<ItemCarProps[]>([]);
+	const [loadImages, setLoadImages] = useState<string[]>([]);
 	useEffect(() => {
 		handleSearchMyCars();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,6 +94,9 @@ export default function Dashboard() {
 			console.log(error.message);
 		}
 	}
+	function handleLoadImages(id: string) {
+		setLoadImages((prev) => [...prev, id]);
+	}
 	if (loading) {
 		return (
 			<div className="bg-gray-300 absolute flex min-h-screen w-screen top-0">
@@ -108,34 +112,41 @@ export default function Dashboard() {
 			<SidebarDashboard />
 			{carList.length > 0 ? (
 				<main className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-4 mt-6">
-					{carList.map((doc) => (
-						<section
-							className="bg-white shadow-2xl rounded-xl flex flex-col relative"
-							key={doc.id}
-						>
-							<button
-								type="button"
-								onClick={() => handleDeleteCar(doc)}
-								className="bg-white w-10 h-10 absolute top-2 right-2 flex justify-center items-center rounded-full z-20 hover:text-red-500 cursor-pointer transition duration-300 shadow hover:scale-102"
-							>
-								<Trash />
-							</button>
-							<img
-								className="w-full h-56 object-cover  rounded-t-xl transition duration-300 hover:scale-101"
-								src={doc.images[0].url}
-								alt="Imagem de um carro"
-							/>
-							<span className="font-bold px-2 py-2 text-lg">{doc.carName}</span>
-							<ul className="flex gap-6 px-2 pb-2">
-								<li>{doc.model}</li>
-								<li className="list-disc">{doc.kilometers} km</li>
-							</ul>
-							<span className="text-xl px-2 pt-5 pb-1.5 font-bold">
-								R$ {doc.value}
-							</span>
-							<div className="border-b my-2 border-gray-400"></div>
-							<span className="p-2 mb-2">{doc.city}</span>
-						</section>
+					{carList.map((car) => (
+						<Link to={`/cardetail/${car.id}`} key={car.id}>
+							<section className="bg-white shadow-2xl rounded-xl flex flex-col relative">
+								<button
+									type="button"
+									onClick={() => handleDeleteCar(car)}
+									className="bg-white w-10 h-10 absolute top-2 right-2 flex justify-center items-center rounded-full z-20 hover:text-red-500 cursor-pointer transition duration-300 shadow hover:scale-102"
+								>
+									<Trash />
+								</button>
+								<div
+									className={`w-full h-56 flex justify-center items-center rounded-t-xl  bg-zinc-200 ${loadImages.includes(car.id) ? "hidden" : "block"}`}
+								>
+									<div className="border-b-white border rounded-full size-16 animate-spin mt-5"></div>
+								</div>
+								<img
+									className={`w-full h-56 object-cover  rounded-t-xl transition duration-300 hover:scale-101 ${loadImages.includes(car.id) ? "block" : "hidden"}`}
+									src={car.images[0].url}
+									onLoad={() => handleLoadImages(car.id)}
+									alt={`Imagem de um ${car.carName}`}
+								/>
+								<span className="font-bold px-2 py-2 text-lg">
+									{car.carName}
+								</span>
+								<ul className="flex gap-6 px-2 pb-2">
+									<li>Ano {car.year}</li>
+									<li className="list-disc">{car.kilometers} km</li>
+								</ul>
+								<span className="text-xl px-2 pt-5 pb-1.5 font-bold">
+									R$ {car.value}
+								</span>
+								<div className="border-b my-2 border-gray-400"></div>
+								<span className="p-2 mb-2">{car.city}</span>
+							</section>
+						</Link>
 					))}
 				</main>
 			) : (
