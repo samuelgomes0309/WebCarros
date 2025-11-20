@@ -34,7 +34,6 @@ export default function Detail() {
 			const docRef = doc(db, "collectionCars", id);
 			const response = await getDoc(docRef);
 			if (!response.exists()) {
-				toast.error("Não possui registros.");
 				nav("/dashboard");
 				return;
 			}
