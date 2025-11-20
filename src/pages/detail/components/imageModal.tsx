@@ -36,7 +36,7 @@ export default function ImageModal({
 				<img
 					src={imageUrl}
 					alt={`Imagem de um ${carName}`}
-					className="max-h-[80vh] max-w-[90vw] object-contain rounded-lg"
+					className="max-h-[80vh] max-w-[90vw] min-h-96 object-contain rounded-lg"
 				/>
 			</div>
 		</div>
