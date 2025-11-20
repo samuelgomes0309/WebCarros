@@ -7,6 +7,12 @@ import NewDash from "./pages/dashboard/new";
 import Layout from "./components/layout";
 import { Private } from "./routes/private";
 
+export type RouterParams = {
+	cardetail: {
+		id: string;
+	};
+};
+
 export const router = createBrowserRouter([
 	{
 		element: <Layout />,
